@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js" ></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+  <script type="text/javascript">
+  $(document).ready(function () {
+/*    $('#dtBasicExample').DataTable();
+    $('.dataTables_length').addClass('bs-select');*/
+    var myArray=[];
+    getAllemploy=function()
+        {
+          $.ajax({
+            type: "GET",
+            url: "http://localhost:3000/getdata",
+            dataType: "json",
+            success:function(er,tr,st){
+              //datatableEmploy(er);
+              if(er.status==false)
+              {
+                console.log("errormessage>>>",er.message);
+                swal(er.message, {
+                  icon: "warning",
+                });
+              }
+              else{
+                datatableEmploy(er.result);
+              }
+            },
+            error: function()
+            {
+              alert("error");        
+            }
+          });
+        }
+        getAllemploy();
+        var dattab;
+        datatableEmploy=function(d)
+      {
+        console.log("jsonstringd",JSON.parse(JSON.stringify(d)));
+        if(dattab!=undefined){
+          dattab.destroy();
+        }
+        dattab=$("#table").DataTable({
+          "iDisplayLength": 2,
+          "bLengthChange": false,
+          data:JSON.parse(JSON.stringify(d)),
+          columns: [
+          { title: "User Name" ,data:"username"},
+          { title: "Project Title" ,data:"project_title"},
+          { title: "Project Status" ,data:"status"},
+          { title: "Project End Date",data:"Project_End_Date" },
+          { title: "User Category",data:"subcategories" }]
+        });
+      }
+    });
+</script>
+</head>
+<body>
+  <div class="table-responsive">
+      <table  id="table">
+          <tbody id="tablebody">
+          </tbody>
+      </table>
+  </div>
+</body>
+</html>

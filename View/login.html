@@ -1,0 +1,85 @@
+<html>
+<head>
+<title>Login Form</title>
+<meta name="robots" content="noindex, nofollow">
+<!-- Include CSS File Here -->
+<link rel="stylesheet" href="css/style.css"/>
+<!-- Include CSS File Here -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("#login").click(function(){
+  	{
+  		let username=document.getElementById("username").value;
+  		let password=document.getElementById("password").value;
+  	  if(username==''||password==''){
+  	  	swal({
+		  title: "Error!",
+		  text: "Please Fill All Datas!",
+		  icon: "error",
+		  button: "OK!",
+		});
+  	  }else{
+  	  	let data1={
+				    "username":username,
+				    "password":password
+				}
+  	  	console.log(data1)
+  	  	$.ajax({
+	        type: "POST",
+	        url: "http://localhost:3000/login",
+	        dataType: "json",
+	        data:{
+				    "username":username,
+				    "password":password
+				},
+	        success:function(er,tr,st){
+	          	if(er.status==true){
+	          		swal({
+					  title: "success!",
+					  text: er.message,
+					  icon: "success",
+					  button: "OK!",
+					}).then(
+						window.location="./Auctiontest.html"
+					)
+	          	}else{
+	          		swal({
+					  title: "Error!",
+					  text: er.message,
+					  icon: "error",
+					  button: "OK!",
+					})
+	          	}
+	        },
+	        error: function()
+	        {
+	          swal(er.message, {
+	              icon: "error",
+	              button:"OK!"
+	            })        
+	        }
+	    });
+  	  }
+    }
+  });
+});
+</script>
+</head>
+<body>
+<div class="container">
+<div class="main">
+<form class="form" method="post" action="#">
+<h2>Login Form </h2>
+<label>UserName :</label>
+<input type="text" name="username" id="username">
+<label>Password :</label>
+<input type="password" name="password" id="password">
+<input type="button" name="login" id="login" value="Login">
+<p style="text-align:center;">Username:uppli & Password:uppli123</p>
+</form>
+</div>
+</div>
+</body>
+</html>
